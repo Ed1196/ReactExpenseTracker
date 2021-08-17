@@ -1,0 +1,9 @@
+.balance {
+  padding: 1rem;
+  border-radius: 12px;
+  background-color: #e3fce0;
+  text-align: center;
+  display: flex;
+  justify-content: space-around;
+  height: 10rem;
+}
