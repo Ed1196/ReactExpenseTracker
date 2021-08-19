@@ -1,35 +1,58 @@
 import React, { useState } from "react";
-import "./ExpenseForm.css";
+import styles from "./ExpenseForm.module.css";
 
 const ExpenseForm = (props) => {
   const [enteredTitle, setEnteredTitle] = useState("");
   const titleChangedHandler = (event) => {
+    setInvalidTitle(false);
     setEnteredTitle(event.target.value);
   };
   const [enteredAmount, setEnteredAmount] = useState("");
   const amountChangedHandler = (event) => {
+    setInvalidAmount(false);
     setEnteredAmount(event.target.value);
   };
   const [enteredDate, setEnteredDate] = useState("");
   const dateChangedHandler = (event) => {
+    setInvalidDate(false);
     setEnteredDate(event.target.value);
   };
+  const [invalidTitle, setInvalidTitle] = useState(false);
+  const [invalidAmount, setInvalidAmount] = useState(false);
+  const [invalidDate, setInvalidDate] = useState(false);
   const submitHandler = (event) => {
     event.preventDefault();
-    const expenseData = {
-      title: enteredTitle,
-      amount: +enteredAmount,
-      date: new Date(enteredDate),
-    };
-    props.onSaveExpenseData(expenseData);
-    setEnteredTitle("");
-    setEnteredAmount("");
-    setEnteredDate("");
+    if (enteredTitle.trim().length === 0) {
+      setInvalidTitle(true);
+    }
+    console.log(enteredAmount);
+    if (enteredAmount === "" || enteredAmount < 0) {
+      setInvalidAmount(true);
+    }
+    const currDate = new Date(enteredDate);
+    if (isNaN(currDate.getTime())) {
+      setInvalidDate(true);
+    }
+    if (!invalidTitle && !invalidAmount && !invalidDate) {
+      const expenseData = {
+        title: enteredTitle,
+        amount: +enteredAmount,
+        date: new Date(enteredDate),
+      };
+      props.onSaveExpenseData(expenseData);
+      setEnteredTitle("");
+      setEnteredAmount("");
+      setEnteredDate("");
+    }
   };
   return (
     <form onSubmit={submitHandler}>
-      <div className="new-expense__control">
-        <div className="new-expense__control">
+      <div className={`${styles["new-expense__control"]}`}>
+        <div
+          className={`${styles["new-expense__control"]} ${
+            invalidTitle && styles.invalid
+          }`}
+        >
           <label>Title</label>
           <input
             type="text"
@@ -38,8 +61,8 @@ const ExpenseForm = (props) => {
           />
         </div>
       </div>
-      <div className="new-expense__control">
-        <div className="new-expense__control">
+      <div className={`${styles["new-expense__control"]}`}>
+        <div className={`${styles["new-expense__control"]} ${invalidAmount && styles.invalid}`}>
           <label>Amount</label>
           <input
             type="number"
@@ -50,8 +73,8 @@ const ExpenseForm = (props) => {
           />
         </div>
       </div>
-      <div className="new-expense__control">
-        <div className="new-expense__control">
+      <div className={`${styles["new-expense__control"]}`}>
+        <div className={`${styles["new-expense__control"]} ${invalidDate && styles.invalid}`}>
           <label>Date</label>
           <input
             type="date"
@@ -62,7 +85,7 @@ const ExpenseForm = (props) => {
           />
         </div>
       </div>
-      <div className="new-expense__actions">
+      <div className={`${styles["new-expense__actions"]}`}>
         <button type="submit">Add Expense</button>
         <button type="button" onClick={props.onCancel}>
           Cancel

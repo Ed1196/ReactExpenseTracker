@@ -34,7 +34,9 @@ DUMMY_EXPENSES.forEach((arrayItem) => {
 
 const STARTING_BALANCE = 4000;
 const App = () => {
-  const [balance, updateBalance] = useState(STARTING_BALANCE - CURRENT_EXPENSES);
+  const [balance, updateBalance] = useState(
+    STARTING_BALANCE - CURRENT_EXPENSES
+  );
   const [expenses, setExpenses] = useState(DUMMY_EXPENSES);
   const addExpenseHandler = (expense) => {
     if (balance - expense.amount < 0) {
@@ -46,6 +48,7 @@ const App = () => {
       setExpenses((prevExpenses) => {
         return [expense, ...prevExpenses];
       });
+      console.log(expenses);
     }
   };
   return (

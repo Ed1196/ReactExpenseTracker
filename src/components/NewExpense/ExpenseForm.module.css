@@ -12,6 +12,15 @@
   display: block;
 }
 
+.new-expense__control.invalid label {
+  color: red;
+}
+
+.new-expense__control.invalid input {
+  background-color: rgb(228, 165, 165);
+  border-color: red;
+}
+
 .new-expense__control input {
   font: inherit;
   padding: 0.5rem;
@@ -22,5 +31,6 @@
 }
 
 .new-expense__actions {
-  text-align: right;
+  text-align: center;
+  margin-top: .5rem;
 }
