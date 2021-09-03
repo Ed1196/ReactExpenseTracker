@@ -24,14 +24,17 @@ const ExpenseForm = (props) => {
     event.preventDefault();
     if (enteredTitle.trim().length === 0) {
       setInvalidTitle(true);
+      return;
     }
     console.log(enteredAmount);
     if (enteredAmount === "" || enteredAmount < 0) {
       setInvalidAmount(true);
+      return;
     }
     const currDate = new Date(enteredDate);
     if (isNaN(currDate.getTime())) {
       setInvalidDate(true);
+      return;
     }
     if (!invalidTitle && !invalidAmount && !invalidDate) {
       const expenseData = {

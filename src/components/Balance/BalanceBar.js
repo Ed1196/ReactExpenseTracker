@@ -1,17 +1,16 @@
-import "./BalanceBar.css";
+import styles from "./BalanceBar.module.css";
 
 const BalanceBar = (props) => {
-  let barFillHeight = "100%";
-  if (props.balance > 0) {
-    let expenses = 100 - Math.round((props.balance / props.maxBalance) * 100);
-    barFillHeight = expenses + "%";
-  }
   return (
-    <div className="balance-bar">
-      <div className="balance-bar__inner">
+    <div className={styles["balance-bar"]}>
+      <div className={`${styles["balance-bar__inner"]}
+                        ${props.colorForVar === "yellow" && styles.half}
+                        ${props.colorForVar === "red" && styles.full}`}>
         <div
-          className="balance-bar__fill"
-          style={{ height: barFillHeight }}
+          className={`${styles["balance-bar__fill"]} 
+                      ${props.colorForVar === "yellow" && styles.half} 
+                      ${props.colorForVar === "red" && styles.full}`}
+          style={{ height: props.barFillHeight }}
         ></div>
       </div>
       <div>$:{Math.round(props.balance)}</div>

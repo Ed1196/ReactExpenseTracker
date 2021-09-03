@@ -1,6 +1,7 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import Expenses from "./components/Expenses/Expenses";
 import NewExpense from "./components/NewExpense/NewExpense";
+import ErrorModal from "./components/UI/ErrorModal";
 const DUMMY_EXPENSES = [
   {
     id: "e1",
@@ -38,9 +39,13 @@ const App = () => {
     STARTING_BALANCE - CURRENT_EXPENSES
   );
   const [expenses, setExpenses] = useState(DUMMY_EXPENSES);
+  const [error, setError] = useState("");
   const addExpenseHandler = (expense) => {
     if (balance - expense.amount < 0) {
-      console.log("Insufficient Funds.");
+      setError({
+        title: "Insufficient Funds.",
+        message: "Please enter a valid expense or remove another one.",
+      });
     } else {
       updateBalance((prevBalance) => {
         return prevBalance - expense.amount;
@@ -51,15 +56,26 @@ const App = () => {
       console.log(expenses);
     }
   };
+
+  const closeErrorHandler = () => {
+    setError("");
+  };
   return (
-    <div>
+    <React.Fragment>
       <NewExpense onAddExpense={addExpenseHandler} />
       <Expenses
         items={expenses}
         balance={balance}
         maxBalance={STARTING_BALANCE}
       />
-    </div>
+      {error && (
+        <ErrorModal
+          onConfirm={closeErrorHandler}
+          title={error.title}
+          message={error.message}
+        />
+      )}
+    </React.Fragment>
   );
 };
 

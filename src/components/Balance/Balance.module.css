@@ -7,3 +7,11 @@
   justify-content: space-around;
   height: 10rem;
 }
+
+.balance.half {
+  background-color: #fcf9e0;
+}
+
+.balance.full {
+  background-color: #ffe0e0;
+}

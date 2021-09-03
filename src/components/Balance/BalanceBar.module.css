@@ -18,10 +18,26 @@
   justify-content: flex-end;
 }
 
+.balance-bar__inner.half {
+  background-color: #edeea5;
+}
+
+.balance-bar__inner.full {
+  background-color: #f1a8a8;
+}
+
 .balance-bar__fill {
   background-color: #43b926;
   width: 100%;
   transition: all 0.3s ease-out;
+}
+
+.balance-bar__fill.half {
+  background-color: #ebdb51;
+}
+
+.balance-bar__fill.full {
+  background-color: #e65858;
 }
 
 .chart-bar__label {
