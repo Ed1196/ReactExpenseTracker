@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Expenses from "./components/Expenses/Expenses";
 import NewExpense from "./components/NewExpense/NewExpense";
 import ErrorModal from "./components/UI/ErrorModal";
+import MainHeader from "./components/MainHeader/MainHeader"
 const DUMMY_EXPENSES = [
   {
     id: "e1",
@@ -53,7 +54,6 @@ const App = () => {
       setExpenses((prevExpenses) => {
         return [expense, ...prevExpenses];
       });
-      console.log(expenses);
     }
   };
 
@@ -62,6 +62,7 @@ const App = () => {
   };
   return (
     <React.Fragment>
+      <MainHeader/>
       <NewExpense onAddExpense={addExpenseHandler} />
       <Expenses
         items={expenses}

@@ -1,34 +1,64 @@
-import React, { useState } from "react";
+import React, { useReducer, useState } from "react";
 import styles from "./ExpenseForm.module.css";
 
+const titleReducer = (state, action) => {
+  if(action.type === "USER_INPUT") {
+    return {value: action.val, isValid: action.val.trim().length !== 0};
+  }
+  if(action.type === "FORM_SUBMIT") {
+    return {value: state.value, isValid: false}
+  }
+  if(action.type === "RESET") {
+    return {value: "", isValid: true}
+  }
+  return {value: "", isValid: false};
+}
+
+const amountReducer = (state, action) => {
+  if (action.type === "USER_INPUT") {
+    let temp = true;
+    if(action.val === "" || action.val < 0) {
+      temp = false;
+    }
+    return { value: action.val, isValid: temp };
+  }
+  if (action.type === "FORM_SUBMIT") {
+    return { value: state.value, isValid: false };
+  }
+  if (action.type === "RESET") {
+    return { value: "", isValid: true };
+  }
+  return { value: "", isValid: false };
+};
+
 const ExpenseForm = (props) => {
-  const [enteredTitle, setEnteredTitle] = useState("");
-  const titleChangedHandler = (event) => {
-    setInvalidTitle(false);
-    setEnteredTitle(event.target.value);
-  };
-  const [enteredAmount, setEnteredAmount] = useState("");
-  const amountChangedHandler = (event) => {
-    setInvalidAmount(false);
-    setEnteredAmount(event.target.value);
-  };
+  
   const [enteredDate, setEnteredDate] = useState("");
   const dateChangedHandler = (event) => {
     setInvalidDate(false);
     setEnteredDate(event.target.value);
   };
-  const [invalidTitle, setInvalidTitle] = useState(false);
-  const [invalidAmount, setInvalidAmount] = useState(false);
   const [invalidDate, setInvalidDate] = useState(false);
+
+  const [titleState, dispatchTitle] = useReducer(titleReducer, {value: "", isValid: true})
+  const titleChangedHandler = (event) => {
+    dispatchTitle({ type: "USER_INPUT", val: event.target.value });
+  };
+  const [amountState, dispatchAmount] = useReducer(amountReducer, {value: "", isValid: true})
+  const amountChangedHandler = (event) => {
+    dispatchAmount({ type: "USER_INPUT", val: event.target.value });
+  };
+
   const submitHandler = (event) => {
     event.preventDefault();
-    if (enteredTitle.trim().length === 0) {
-      setInvalidTitle(true);
+    dispatchTitle({ type: "USER_INPUT", val: titleState.value });
+    if (!titleState.isValid) {
+      dispatchTitle({type: "FORM_SUBMIT"})
       return;
     }
-    console.log(enteredAmount);
-    if (enteredAmount === "" || enteredAmount < 0) {
-      setInvalidAmount(true);
+    dispatchAmount({ type: "USER_INPUT", val: amountState.value });
+    if (!amountState.isValid) {
+      dispatchAmount({ type: "FORM_SUBMIT" });
       return;
     }
     const currDate = new Date(enteredDate);
@@ -36,15 +66,16 @@ const ExpenseForm = (props) => {
       setInvalidDate(true);
       return;
     }
-    if (!invalidTitle && !invalidAmount && !invalidDate) {
+    console.log(titleState.isValid);
+    if (titleState.isValid && amountState.isValid && !invalidDate) {
       const expenseData = {
-        title: enteredTitle,
-        amount: +enteredAmount,
+        title: titleState.value,
+        amount: +amountState.value,
         date: new Date(enteredDate),
       };
       props.onSaveExpenseData(expenseData);
-      setEnteredTitle("");
-      setEnteredAmount("");
+      dispatchTitle({ type: "RESET"});
+      dispatchAmount({ type: "RESET" });
       setEnteredDate("");
     }
   };
@@ -53,25 +84,25 @@ const ExpenseForm = (props) => {
       <div className={`${styles["new-expense__control"]}`}>
         <div
           className={`${styles["new-expense__control"]} ${
-            invalidTitle && styles.invalid
+            !titleState.isValid && styles.invalid
           }`}
         >
           <label>Title</label>
           <input
             type="text"
-            value={enteredTitle}
+            value={titleState.value}
             onChange={titleChangedHandler}
           />
         </div>
       </div>
       <div className={`${styles["new-expense__control"]}`}>
-        <div className={`${styles["new-expense__control"]} ${invalidAmount && styles.invalid}`}>
+        <div className={`${styles["new-expense__control"]} ${!amountState.isValid && styles.invalid}`}>
           <label>Amount</label>
           <input
             type="number"
             min="0.01"
             step="0.01"
-            value={enteredAmount}
+            value={amountState.value}
             onChange={amountChangedHandler}
           />
         </div>
