@@ -1,6 +1,9 @@
 import styles from "./BalanceBar.module.css";
+import React, { useContext } from "react";
+import BalanceContext from "../context/auth-context";
 
 const BalanceBar = (props) => {
+  const ctx = useContext(BalanceContext);
   return (
     <div className={styles["balance-bar"]}>
       <div className={`${styles["balance-bar__inner"]}
@@ -13,7 +16,7 @@ const BalanceBar = (props) => {
           style={{ height: props.barFillHeight }}
         ></div>
       </div>
-      <div>$:{Math.round(props.balance)}</div>
+      <div>$:{Math.round(ctx.balance)}</div>
     </div>
   );
 };

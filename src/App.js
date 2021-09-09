@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import Expenses from "./components/Expenses/Expenses";
 import NewExpense from "./components/NewExpense/NewExpense";
 import ErrorModal from "./components/UI/ErrorModal";
-import MainHeader from "./components/MainHeader/MainHeader"
+import MainHeader from "./components/MainHeader/MainHeader";
+import BalanceContext from "./components/context/auth-context";
 const DUMMY_EXPENSES = [
   {
     id: "e1",
@@ -62,13 +63,13 @@ const App = () => {
   };
   return (
     <React.Fragment>
-      <MainHeader/>
+      <MainHeader />
       <NewExpense onAddExpense={addExpenseHandler} />
-      <Expenses
-        items={expenses}
-        balance={balance}
-        maxBalance={STARTING_BALANCE}
-      />
+      <BalanceContext.Provider
+        value={{ balance: balance, maxBalance: STARTING_BALANCE }}
+      >
+        <Expenses items={expenses} />
+      </BalanceContext.Provider>
       {error && (
         <ErrorModal
           onConfirm={closeErrorHandler}

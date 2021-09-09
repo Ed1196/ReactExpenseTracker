@@ -21,11 +21,7 @@ const Expenses = (props) => {
           selectedYear={filteredYear}
           onChangeFilter={filterChangeHandler}
         />
-        <ExpensesChart
-          expenses={filteredExpenses}
-          balance={props.balance}
-          maxBalance={props.maxBalance}
-        />
+        <ExpensesChart expenses={filteredExpenses} />
         <ExpensesList items={filteredExpenses} />
       </Card>
     </li>

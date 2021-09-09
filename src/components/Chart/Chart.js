@@ -18,10 +18,7 @@ const Chart = (props) => {
           />
         ))}
       </div>
-      <Balance
-        balance={props.balance}
-        maxBalance={props.maxBalance}
-      />
+      <Balance />
     </div>
   );
 };
