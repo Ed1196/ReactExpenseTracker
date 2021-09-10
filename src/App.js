@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Expenses from "./components/Expenses/Expenses";
 import NewExpense from "./components/NewExpense/NewExpense";
 import ErrorModal from "./components/UI/ErrorModal";
 import MainHeader from "./components/MainHeader/MainHeader";
-import BalanceContext from "./components/context/auth-context";
+import BalanceContext from "./components/context/balance-context";
+import Login from "./components/Login/Login";
+import AuthContext from "./components/context/auth-context";
+
 const DUMMY_EXPENSES = [
   {
     id: "e1",
@@ -57,26 +60,36 @@ const App = () => {
       });
     }
   };
-
   const closeErrorHandler = () => {
     setError("");
   };
+  const ctx = useContext(AuthContext);
   return (
     <React.Fragment>
-      <MainHeader />
-      <NewExpense onAddExpense={addExpenseHandler} />
-      <BalanceContext.Provider
-        value={{ balance: balance, maxBalance: STARTING_BALANCE }}
-      >
-        <Expenses items={expenses} />
-      </BalanceContext.Provider>
-      {error && (
-        <ErrorModal
-          onConfirm={closeErrorHandler}
-          title={error.title}
-          message={error.message}
-        />
-      )}
+      <MainHeader/>
+      <main>
+        {!ctx.isLoggedIn && <Login/>}
+        {ctx.isLoggedIn && (
+          <React.Fragment>
+            <NewExpense onAddExpense={addExpenseHandler} />
+            <BalanceContext.Provider
+              value={{
+                balance: balance,
+                maxBalance: STARTING_BALANCE,
+              }}
+            >
+              <Expenses items={expenses} />
+            </BalanceContext.Provider>
+            {error && (
+              <ErrorModal
+                onConfirm={closeErrorHandler}
+                title={error.title}
+                message={error.message}
+              />
+            )}
+          </React.Fragment>
+        )}
+      </main>
     </React.Fragment>
   );
 };

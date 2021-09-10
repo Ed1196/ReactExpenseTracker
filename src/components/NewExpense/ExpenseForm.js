@@ -66,7 +66,6 @@ const ExpenseForm = (props) => {
       setInvalidDate(true);
       return;
     }
-    console.log(titleState.isValid);
     if (titleState.isValid && amountState.isValid && !invalidDate) {
       const expenseData = {
         title: titleState.value,

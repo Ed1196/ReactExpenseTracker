@@ -1,6 +1,6 @@
 import styles from "./BalanceBar.module.css";
 import React, { useContext } from "react";
-import BalanceContext from "../context/auth-context";
+import BalanceContext from "../context/balance-context";
 
 const BalanceBar = (props) => {
   const ctx = useContext(BalanceContext);
