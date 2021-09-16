@@ -7,6 +7,7 @@ const Balance = (props) => {
   let barFillHeight = "100%";
   let colorForVar = "green";
   if (ctx.balance > 0) {
+    console.log("Balance re-evaluated!")
     let expenses = 100 - Math.round((ctx.balance / ctx.maxBalance) * 100);
     if (expenses > 50 && expenses <= 80) {
       colorForVar = "yellow";
@@ -26,4 +27,4 @@ const Balance = (props) => {
   );
 };
 
-export default Balance;
+export default React.memo(Balance);
